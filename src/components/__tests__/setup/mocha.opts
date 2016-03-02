@@ -1,0 +1,8 @@
+--recursive ./src/components/__tests__/**/*.js
+
+--require ./src/components/__tests__/setup/setup
+--compilers js:babel/register
+--full-trace
+--reporter list
+--ui bdd
+--throw-deprecation

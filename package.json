@@ -1,5 +1,5 @@
 {
-  "name": "react-starter-es6-babel",
+  "name": "react-jsdom-mocha-viewTesting",
   "browserify": {
     "transform": [
       [
@@ -9,14 +9,16 @@
             "es2015",
             "react"
           ]
-        }
+        },
+        "livereactload"
       ]
     ]
   },
   "scripts": {
-    "build": "NODE_ENV=production browserify main.js | uglifyjs -cm > public/bundle.js",
+    "build": "NODE_ENV=production browserify src/app.js | uglifyjs -cm > public/bundle.js",
     "start": "ecstatic -p 8000 public",
-    "watch": "watchify main.js -o public/bundle.js -dv"
+    "watch": "watchify src/app.js -o public/bundle.js -dv",
+    "test": "mocha --opts ./src/components/__tests__/setup/mocha.opts"
   },
   "dependencies": {
     "babel-preset-es2015": "^6.3.13",
@@ -28,5 +30,14 @@
     "react-dom": "^0.14.3",
     "uglify-js": "^2.6.1",
     "watchify": "^3.6.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "expect": "^1.14.0",
+    "mocha": "^2.4.5",
+    "mocha-babel": "^3.0.3",
+    "node-jsdom": "^3.1.5",
+    "react-addons": "^0.9.1-deprecated",
+    "react-addons-test-utils": "^0.14.7"
   }
 }
