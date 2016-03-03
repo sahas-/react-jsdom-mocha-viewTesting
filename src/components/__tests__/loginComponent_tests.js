@@ -77,7 +77,8 @@ describe('Login view tests -->', () => {
       let cancel = getMe(locators.cancelBtn);
       TestUtils.Simulate.change(username,{target:{value:'sahas'}});
       TestUtils.Simulate.click(cancel);
-      expect(username.value).toBe.null;
+      console.log(username.value);
+      expect(username.value).toEqual('');
   });
 
   it('should clear password when cancel clicked',()=>{
@@ -85,7 +86,8 @@ describe('Login view tests -->', () => {
       let cancel = getMe(locators.cancelBtn);
       TestUtils.Simulate.change(password,{target:{value:'sahas'}});
       TestUtils.Simulate.click(cancel);
-      expect(password.value).toBe.null;
+      console.log(password.value);
+      expect(password.value).toEqual('');
   });
 
   it('should render error msg when login fails',()=>{

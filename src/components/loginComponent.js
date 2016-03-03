@@ -70,7 +70,8 @@ export class LoginForm extends React.Component {
           <Label name="Password"/>
           <Textbox ref="txtPassword" 
             placeholder="password here" 
-            type="password"/>
+            type="password"
+            value={this.state.password} />
         </div>
         <div>
           <label>
