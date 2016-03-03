@@ -77,7 +77,6 @@ describe('Login view tests -->', () => {
       let cancel = getMe(locators.cancelBtn);
       TestUtils.Simulate.change(username,{target:{value:'sahas'}});
       TestUtils.Simulate.click(cancel);
-      console.log(username.value);
       expect(username.value).toEqual('');
   });
 
@@ -86,7 +85,6 @@ describe('Login view tests -->', () => {
       let cancel = getMe(locators.cancelBtn);
       TestUtils.Simulate.change(password,{target:{value:'sahas'}});
       TestUtils.Simulate.click(cancel);
-      console.log(password.value);
       expect(password.value).toEqual('');
   });
 
