@@ -1,4 +1,6 @@
 import React from 'react';
+import LoginActions from '../actions/LoginActions'
+import LoginStore from '../stores/LoginStore'
 
 
 export class Label extends React.Component {
@@ -53,9 +55,14 @@ export class LoginForm extends React.Component {
     super();
     this.state={
       username:'',
-      password:''
+      password:'',
+      status:null
     };
   }
+  componentDidMount() {
+
+    LoginStore.addChangeListener(this._onChange.bind(this));
+  }  
   render(){
     return (
       <div ref="LoginForm">
@@ -80,18 +87,37 @@ export class LoginForm extends React.Component {
           </label>
         </div>
         <Button ref="btnLogin" 
-          name="Login" /> 
-          
+          name="Login" 
+          onClick={this._handleLogin.bind(this)}/>           
         <Button ref="btnCancel" 
           name="Cancel" 
-          onClick={this.handleCancel.bind(this)}/>
+          onClick={this._handleCancel.bind(this)}/>
+        <div>
+          <h4 ref="notification" 
+              className="notification">{this.state.status}</h4>
+        </div>
       </div>);
-
   }
-  handleCancel(){
+  //private accessor methods  
+  _handleLogin(){
+    LoginActions.login({
+      username:this.refs.txtUsername.state.txtValue,
+      password:this.refs.txtPassword.state.txtValue
+    })
+  }
+  _handleCancel(){
     this.setState({
         username:'',
         password:''
       });
+  }
+  _getStatus(){
+
+    return LoginStore.getStatus();
+  }
+  _onChange(){
+    this.setState({
+      status:this._getStatus()
+    });
   }
 }
