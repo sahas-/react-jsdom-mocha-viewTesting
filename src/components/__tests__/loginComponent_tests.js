@@ -15,8 +15,19 @@ describe('Login view tests -->', () => {
     'inputField_password': '.generalInput[type="password"]',
     'inputField_checkbox': '.generalInput[type="checkbox"]',
     'cancelBtn':'.generalButton[name="Cancel"]',
-    'loginBtn':'.generalButton[name="Login"]'
+    'loginBtn':'.generalButton[name="Login"]',
+    'notification':'.notification'
   };
+  let userprofile={
+    shouldPass:{
+      'user':'sahas',
+      'pass':'password'
+    },
+    shouldFail:{
+      'user':'sahas',
+      'pass':'sahas'
+    }
+  }
 
   before(()=>{
     //virtual DOM, good for one level deep isolated component tests
@@ -66,10 +77,6 @@ describe('Login view tests -->', () => {
       let inputField = getMe(locators.inputField_text);
       TestUtils.Simulate.change(inputField,{target:{value:'sahas'}});
       expect(inputField.value).toEqual('sahas');
-  })
-
-  it('should call login API with username,password when login clicked',()=>{
-
   });
 
   it('should clear username when cancel clicked',()=>{
@@ -87,11 +94,45 @@ describe('Login view tests -->', () => {
       TestUtils.Simulate.click(cancel);
       expect(password.value).toEqual('');
   });
-
-  it('should render error msg when login fails',()=>{
-
+  it('should NOT render any notification onload',()=>{
+      let notification = getMe(locators.notification);
+      expect(notification.getAttribute('children')).toEqual(null);
+  });
+  it('should render "WIP" while attempting to login',(done)=>{
+    let waittime = 0; //in ms
+    _testLoginVariations(userprofile.shouldPass,"WIP",waittime,function(result){
+      done();
+    });
   });
 
+  it('should render "SUCCESS" upon successful login',(done)=>{
+    let waittime = 4000; //in ms
+    _testLoginVariations(userprofile.shouldPass,"SUCCESS",waittime,function(result){
+      done();
+    });
+  });
+
+  it('should render "ERROR" when login fails',(done)=>{
+    let waittime = 4000; //in ms
+    _testLoginVariations(userprofile.shouldFail,"ERROR",waittime,function(result){
+      done();
+    });
+  });
+  function _testLoginVariations(profile,result,timeout,cb){
+      let username = getMe(locators.inputField_text);
+      let password = getMe(locators.inputField_password);
+      let loginBtn = getMe(locators.loginBtn);      
+      let notification = getMe(locators.notification);
+
+      TestUtils.Simulate.change(username,{target:{value:profile.user}});
+      TestUtils.Simulate.change(password,{target:{value:profile.pass}});
+      TestUtils.Simulate.click(loginBtn);
+
+      setTimeout(function(){
+        expect(notification.props.children).toEqual(result);
+        cb();
+      },timeout);    
+  }
   //Utility methods
   //renders just one level deep in virtual DOM, good for isolated component level testing
   function shallowRender(Component) {
